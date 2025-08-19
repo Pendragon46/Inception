@@ -6,6 +6,10 @@ Mariadb is a relationnal database management system (SQL). Manage data for dynam
 ```bash
 apk add mariadb
 apk add mariadb-client #The client is not automatically installed in alpine
+mkdir -p /run/mysqld
+touch /run/mysqld/mysqld.sock
+chown -R mysql:mysql /run/mysqld/
+mariadb-install-db --user=mysql --datadir=/var/lib/mysql
 ```
 
 - Debian
@@ -20,4 +24,32 @@ apt install mariadb-server
 ```shell
 mysql-secure-installation # or mariadb-secure-installation 
 ```
+equivalent to 
+```bash
 
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpassword');
+DROP USER IF EXISTS root@'%';
+DROP USER IF EXISTS ''@'%';
+DROP USER IF EXISTS ''@'localhost';
+flush privileges;
+
+```
+
+- Wordpress (container)
+```sh
+mariadbd --user=mysql --datadir=/var/lib/mysql &
+
+# input these command
+CREATE DATABASE wordpress_db;
+CREATE USER 'wp_user'@'%' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON wordpress_db.* TO 'wp_user'@'%' IDENTIFIED BY 'password';
+FLUSH PRIVILEGES;
+EXIT
+
+# Kill the background daemon
+pkill mariadbd
+
+# reload it in foreground
+mariadbd --user=mysql --datadir=/var/lib/mysql
+
+```
