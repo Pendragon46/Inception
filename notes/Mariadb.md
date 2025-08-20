@@ -6,10 +6,12 @@ Mariadb is a relationnal database management system (SQL). Manage data for dynam
 ```bash
 apk add mariadb
 apk add mariadb-client #The client is not automatically installed in alpine
+
 mkdir -p /run/mysqld
 touch /run/mysqld/mysqld.sock
 chown -R mysql:mysql /run/mysqld/
 mariadb-install-db --user=mysql --datadir=/var/lib/mysql
+
 ```
 
 - Debian
@@ -28,8 +30,6 @@ equivalent to
 ```bash
 
 SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpassword');
-DROP USER IF EXISTS root@'%';
-DROP USER IF EXISTS ''@'%';
 DROP USER IF EXISTS ''@'localhost';
 flush privileges;
 
@@ -53,3 +53,7 @@ pkill mariadbd
 mariadbd --user=mysql --datadir=/var/lib/mysql
 
 ```
+
+------
+
+[digital-ocean](https://www.digitalocean.com/community/tutorials/install-wordpress-on-ubuntu)

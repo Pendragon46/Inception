@@ -8,4 +8,8 @@ Wordpress is a CMS (Content Management System). It is a tool for creating websit
 		Wordpress is written in php and the server need a CGI (`CGI allows web servers to execute scripts or programs`) to correctly serve it. Php-fpm is a Fast CGI process Manager.
 
 -  *Database ([[Mariadb]])*
-		
+
+
+--------------
+
+[install wordpress](https://www.digitalocean.com/community/tutorials/install-wordpress-on-ubuntu)
