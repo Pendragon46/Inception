@@ -4,7 +4,6 @@ RUN apk update && apk upgrade \
      && apk add nginx
 
 COPY conf/nginx.conf /etc/nginx/
-COPY index.html /var/www/html/
 COPY tools/private.key /etc/ssl/
 COPY tools/cert.crt /etc/ssl/
 

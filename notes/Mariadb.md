@@ -28,7 +28,7 @@ mysql-secure-installation # or mariadb-secure-installation
 ```
 equivalent to 
 ```bash
-
+	
 SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpassword');
 DROP USER IF EXISTS ''@'localhost';
 flush privileges;

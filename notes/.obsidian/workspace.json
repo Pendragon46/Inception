@@ -83,12 +83,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Php.md",
+                "file": "Mariadb.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Php"
+              "title": "Mariadb"
             }
           }
         ],

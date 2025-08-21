@@ -1,2 +1,4 @@
 fr.subject.pdf
 srcs/requirements/wordpress/
+#secrets/
+#srcs/.env

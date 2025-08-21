@@ -5,13 +5,14 @@ Php is a popular langage for creating dynamic website .
 ### Installation 
 
 ```sh
-apt install php php-cli php-mysql php-curl php-xml php-mbstring php-zip
+apt install php php-cli php-mysql php-curl php-xml php-mbstring php-zip php-phar
 
 #php-cli : a terminal client to php
 #php-mysql : module to connect interact to mysql 
 #php-curl : curl module
 #php-curl : xml module
 #php-mbstring : Enable MultiByte string such as Unicode (japanese caractere)
+#php-phar : is a module to compress entire php applications (multiple file) into a single file phar
 ```
 ### CGI and Fast CGI
 

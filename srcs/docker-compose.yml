@@ -1,0 +1,55 @@
+services:
+  nginx:
+    build: ./requirements/nginx/
+    image: nginx
+    depends_on:
+      - wordpress
+    volumes:
+      -wordpress:/var/www/html/wordpress/
+    restart: always
+
+  wordPress:
+    build: ./requirements/wordpress/
+    image: wordPress
+    volumes:
+      -wordpress:/var/www/html/wordpress/
+    restart: always
+    env_file: ".env"
+    environment:
+      - DOMAIN_NAME
+      - DATABASE_NAME
+      - DATABASE_USER
+      - WP_ADMIN_USER
+    secrets:
+      - db_pass
+      - wp_admin_pass
+
+  mariaDB:
+    build: ./requirements/mariadb/
+    image: mariaDB
+    volumes:
+      -database:/var/lib/mysql
+    secrets:
+      - root_pass
+    restart: always
+
+volumes:
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/trindran/data/wordpress
+      o: bind
+  database:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/trindran/data/database
+
+secrets:
+  db_pass:
+    file : ../secrets/db_pass.txt
+  wp_admin_pass:
+    file : ../secrets/wp_admin_pass.txt
+  root_pass:
+    file : ../secrets/db_root_pass.txt

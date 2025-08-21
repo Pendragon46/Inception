@@ -1,0 +1,9 @@
+FROM alpine:3.21.4
+
+RUN apk update && apk upgrade
+
+RUN apk add mariadb mariadb-client
+
+COPY tools/script.sh /usr/script/
+
+ENTRYPOINT [ "/bin/sh", "/usr/script/script.sh" ]
