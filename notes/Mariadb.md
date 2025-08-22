@@ -50,8 +50,8 @@ EXIT
 pkill mariadbd
 
 # reload it in foreground
+#mariadb listen by default to localhost request, to accept remote request specify the address with bind-adress= ip adress
 mariadbd --user=mysql --datadir=/var/lib/mysql
-
 ```
 
 ------

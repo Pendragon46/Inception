@@ -2,19 +2,23 @@ services:
   nginx:
     build: ./requirements/nginx/
     image: nginx
+    volumes:
+      - wordpress:/var/www/html/wordpress/
+    networks:
+      - webserver_net
     depends_on:
-      - wordpress
-    volumes:
-      -wordpress:/var/www/html/wordpress/
-    restart: always
+      wordpress:
+        condition: service_healthy
+        restart: true
 
-  wordPress:
+  wordpress:
     build: ./requirements/wordpress/
-    image: wordPress
+    image: wordpress
     volumes:
-      -wordpress:/var/www/html/wordpress/
-    restart: always
-    env_file: ".env"
+      - wordpress:/var/www/html/wordpress/
+    networks:
+      - webserver_net
+      - database_net
     environment:
       - DOMAIN_NAME
       - DATABASE_NAME
@@ -23,15 +27,38 @@ services:
     secrets:
       - db_pass
       - wp_admin_pass
+      - wp_user_pass
+    healthcheck:
+      test: ["CMD-SHELL", "netstat -tulnp | grep :9000"]
+      interval: 10s
+      retries: 50
+      start_period: 30s
+      timeout: 10s
+    depends_on:
+      mariadb:
+        condition: service_healthy
+        restart: true
+  
 
-  mariaDB:
+  mariadb:
     build: ./requirements/mariadb/
-    image: mariaDB
+    image: mariadb
     volumes:
-      -database:/var/lib/mysql
+      - mariadb:/var/lib/mysql/
+    networks:
+      - database_net
     secrets:
-      - root_pass
-    restart: always
+      - db_root_pass
+      - db_pass
+    environment:
+      - DATABASE_NAME
+      - DATABASE_USER
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping"]
+      interval: 10s
+      retries: 50
+      start_period: 30s
+      timeout: 10s
 
 volumes:
   wordpress:
@@ -40,16 +67,26 @@ volumes:
       type: none
       device: /home/trindran/data/wordpress
       o: bind
-  database:
+  mariadb:
     driver: local
     driver_opts:
       type: none
-      device: /home/trindran/data/database
+      device: /home/trindran/data/mariadb
+      o: bind
+
+networks:
+  database_net:
+    driver: bridge
+  webserver_net:
+    driver: bridge
+
 
 secrets:
   db_pass:
     file : ../secrets/db_pass.txt
   wp_admin_pass:
     file : ../secrets/wp_admin_pass.txt
-  root_pass:
+  db_root_pass:
     file : ../secrets/db_root_pass.txt
+  wp_user_pass:
+    file : ../secrets/wp_user_pass.txt

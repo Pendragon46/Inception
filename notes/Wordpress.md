@@ -34,9 +34,13 @@ wp config create
 ```sh
 #Wordpress installation. check link to see option
 wp core install 
+#check if installed
+wp core is-installed
 
 ```
 
+ - [wp user create](https://developer.wordpress.org/cli/commands/user/create/)
+ 
 --------------
 
 [install wordpress](https://www.digitalocean.com/community/tutorials/install-wordpress-on-ubuntu)
