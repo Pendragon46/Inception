@@ -2,18 +2,26 @@ services:
   nginx:
     build: ./requirements/nginx/
     image: nginx
+    container_name: nginx
     volumes:
       - wordpress:/var/www/html/wordpress/
     networks:
       - webserver_net
+    ports:
+      - "443:443"
+    secrets:
+      - ssl_cert
+      - ssl_private_key
     depends_on:
       wordpress:
         condition: service_healthy
         restart: true
+    restart: on-failure
 
   wordpress:
     build: ./requirements/wordpress/
     image: wordpress
+    container_name: wordpress
     volumes:
       - wordpress:/var/www/html/wordpress/
     networks:
@@ -24,6 +32,7 @@ services:
       - DATABASE_NAME
       - DATABASE_USER
       - WP_ADMIN_USER
+      - WP_USER
     secrets:
       - db_pass
       - wp_admin_pass
@@ -38,11 +47,12 @@ services:
       mariadb:
         condition: service_healthy
         restart: true
-  
+    restart: on-failure
 
   mariadb:
     build: ./requirements/mariadb/
     image: mariadb
+    container_name: mariadb
     volumes:
       - mariadb:/var/lib/mysql/
     networks:
@@ -59,6 +69,9 @@ services:
       retries: 50
       start_period: 30s
       timeout: 10s
+    env_file:
+      - .env
+    restart: on-failure
 
 volumes:
   wordpress:
@@ -90,3 +103,7 @@ secrets:
     file : ../secrets/db_root_pass.txt
   wp_user_pass:
     file : ../secrets/wp_user_pass.txt
+  ssl_cert:
+    file : ../secrets/ssl_cert.txt
+  ssl_private_key:
+    file : ../secrets/ssl_private_key.txt

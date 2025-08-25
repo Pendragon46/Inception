@@ -6,4 +6,6 @@ RUN apk add mariadb mariadb-client
 
 COPY tools/script.sh /usr/script/
 
+COPY conf/my.cnf /etc
+
 ENTRYPOINT [ "/bin/sh", "/usr/script/script.sh" ]

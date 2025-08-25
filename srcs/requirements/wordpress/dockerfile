@@ -1,0 +1,11 @@
+FROM alpine:3.21.4
+
+RUN apk update && apk upgrade && apk add curl
+
+#Because we will modify the conf file adding the version is necessary
+RUN apk add php83 php83-mysqli php83-curl php83-xml php83-mbstring php83-zip php83-phar && \
+    apk add php83-fpm
+
+COPY conf/www.conf /etc/php83/php-fpm.d/
+COPY tools/script.sh /usr/script/
+ENTRYPOINT [ "/bin/sh", "/usr/script/script.sh" ]
