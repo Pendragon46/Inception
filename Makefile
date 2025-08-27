@@ -6,8 +6,11 @@ COMPOSE_PATH = srcs/docker-compose.yml
 
 
 up:	
-	docker compose -f $(COMPOSE_PATH) up --build
+		@mkdir -p $(VOLUME_DB) $(VOLUME_WP)
+		docker compose -f $(COMPOSE_PATH) up --build
 
+build:
+		docker compose -f $(COMPOSE_PATH) build
 stop:
 		docker compose -f $(COMPOSE_PATH) stop
 down:

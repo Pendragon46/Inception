@@ -3,7 +3,7 @@ FROM alpine:3.21.4
 RUN apk update && apk upgrade \
      && apk add nginx
 
-RUN adduser -D -S -G www-data www-data
+RUN adduser -D -H -S -G www-data www-data
 
 COPY conf/nginx.conf /etc/nginx/
 

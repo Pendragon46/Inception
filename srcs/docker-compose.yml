@@ -18,6 +18,7 @@ services:
         restart: true
     restart: on-failure
 
+
   wordpress:
     build: ./requirements/wordpress/
     image: wordpress
@@ -49,6 +50,7 @@ services:
         restart: true
     restart: on-failure
 
+
   mariadb:
     build: ./requirements/mariadb/
     image: mariadb
@@ -64,7 +66,7 @@ services:
       - DATABASE_NAME
       - DATABASE_USER
     healthcheck:
-      test: ["CMD-SHELL", "mariadb-admin ping"]
+      test: ["CMD-SHELL", "netstat -tulnp | grep :3306"]
       interval: 10s
       retries: 50
       start_period: 30s
@@ -75,12 +77,14 @@ services:
 
 volumes:
   wordpress:
+    name : wordpress
     driver: local
     driver_opts:
       type: none
       device: /home/trindran/data/wordpress
       o: bind
   mariadb:
+    name : mariadb
     driver: local
     driver_opts:
       type: none
@@ -89,8 +93,10 @@ volumes:
 
 networks:
   database_net:
+    name : database_net
     driver: bridge
   webserver_net:
+    name : webserver_net
     driver: bridge
 
 

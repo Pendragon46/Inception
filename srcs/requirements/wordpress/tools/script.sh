@@ -11,12 +11,12 @@ install_cli()
 #create dir and config user and download wordpress.
 #in alpine RAM allocated for execution php script is 128M \
 #which is not enough to run wp core download so we execute it with limit set to 512
-
+#adduser D-pass Hno-home S-sysuser
 download_create_config()
 {
     mkdir -p /var/www/html/wordpress
     if ! id -u www-data &>/dev/null;then
-        adduser -D -S -G www-data www-data
+        adduser -D -H -S -G www-data www-data
     fi
     if [ ! -e /var/www/html/wordpress/wp-config.php ]; then
         php -d memory_limit=512M $(which wp) core download --path=/var/www/html/wordpress
@@ -34,7 +34,6 @@ download_create_config()
 installation()
 {
     if ! wp core is-installed --path=/var/www/html/wordpress 2>/dev/null; then
-       
         wp core install  --path=/var/www/html/wordpress \
                          --url=$DOMAIN_NAME \
                          --title=trindran \
@@ -52,7 +51,7 @@ installation()
 run_php_fpm()
 {
     echo "Start php-fpm83 -F"
-    php-fpm83 -F
+    exec php-fpm83 -F
 }
 
 install_cli
